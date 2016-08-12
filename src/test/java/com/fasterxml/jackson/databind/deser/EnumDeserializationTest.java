@@ -458,11 +458,35 @@ public class EnumDeserializationTest
         assertSame(EnumWithDefaultAnno.OTHER, myEnum);
     }
 
-    public void testEnumWithDefaultAnnotationUsingIndexes() throws Exception {
+    public void testEnumWithDefaultAnnotationUsingIndexesInBound1() throws Exception {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
-        EnumWithDefaultAnno myEnum = mapper.readValue("9", EnumWithDefaultAnno.class);
+        EnumWithDefaultAnno myEnum = mapper.readValue("1", EnumWithDefaultAnno.class);
+        assertSame(EnumWithDefaultAnno.B, myEnum);
+    }
+
+    public void testEnumWithDefaultAnnotationUsingIndexesInBound2() throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+
+        EnumWithDefaultAnno myEnum = mapper.readValue("2", EnumWithDefaultAnno.class);
+        assertSame(EnumWithDefaultAnno.OTHER, myEnum);
+    }
+
+    public void testEnumWithDefaultAnnotationUsingIndexesSameAsLength() throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+
+        EnumWithDefaultAnno myEnum = mapper.readValue("3", EnumWithDefaultAnno.class);
+        assertSame(EnumWithDefaultAnno.OTHER, myEnum);
+    }
+
+    public void testEnumWithDefaultAnnotationUsingIndexesOutOfBound() throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+
+        EnumWithDefaultAnno myEnum = mapper.readValue("4", EnumWithDefaultAnno.class);
         assertSame(EnumWithDefaultAnno.OTHER, myEnum);
     }
 
@@ -473,7 +497,6 @@ public class EnumDeserializationTest
         EnumWithDefaultAnnoAndConstructor myEnum = mapper.readValue("\"foo\"", EnumWithDefaultAnnoAndConstructor.class);
         assertNull("When using a constructor, the default value annotation shouldn't be used.", myEnum);
     }
-
     public void testExceptionFromCustomEnumKeyDeserializer() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new EnumModule());
